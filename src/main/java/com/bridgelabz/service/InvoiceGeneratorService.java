@@ -1,5 +1,6 @@
 package com.bridgelabz.service;
 
+import com.bridgelabz.entity.InvoiceSummary;
 import com.bridgelabz.entity.Ride;
 
 public class InvoiceGeneratorService {
@@ -20,5 +21,12 @@ public class InvoiceGeneratorService {
         }
 
         return totalFare;
+    }
+
+
+    public InvoiceSummary invoiceSummary(Ride[] rides) {
+        double totalFare = calculateFare(rides);
+
+        return new InvoiceSummary(totalFare,rides.length);
     }
 }
