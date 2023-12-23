@@ -7,6 +7,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CabInvoiceGeneratorTest {
 
     InvoiceGeneratorService invoiceGeneratorService = null;
@@ -34,10 +37,10 @@ public class CabInvoiceGeneratorTest {
 
     @Test
     public void givenMultipleRides_CalculateFare(){
-        Ride[] rides = {
-                new Ride(10,5),
-                new Ride(5,2)
-        };
+        ArrayList<Ride> rides = new ArrayList<>();
+
+        rides.add(new Ride(10,5));
+        rides.add(new Ride(5,2));
         double totalFare = invoiceGeneratorService.calculateFare(rides);
 
         Assert.assertEquals(157,totalFare,0.0);
@@ -45,15 +48,32 @@ public class CabInvoiceGeneratorTest {
 
     @Test
     public void enhancedInvoice_return_fare_averageFare_totalRides(){
-        Ride[] rides = {
-                new Ride(10,5),
-                new Ride(5,2)
-        };
+        ArrayList<Ride> rides = new ArrayList<>();
+
+        rides.add(new Ride(10,5));
+        rides.add(new Ride(5,2));
         InvoiceSummary invoiceSummary = invoiceGeneratorService.invoiceSummary(rides);
         double expectedFare = 157;
         int totalRides = 2;
         InvoiceSummary invoiceSummaryExpected = new InvoiceSummary(expectedFare,totalRides);
         Assert.assertEquals(invoiceSummaryExpected,invoiceSummary);
+    }
+
+    @Test
+    public void givenUserId_returnInvoiceSummary(){
+        String userId= "harsh";
+        ArrayList<Ride> rides = new ArrayList<>();
+
+        rides.add(new Ride(10,5));
+        rides.add(new Ride(5,2));
+        invoiceGeneratorService.addRidesToService(userId,rides);
+
+        InvoiceSummary invoiceSummary = invoiceGeneratorService.invoiceSummaryGivenUserID(userId);
+        double expectedFare = 157;
+        int totalRides = 2;
+        InvoiceSummary invoiceSummaryExpected = new InvoiceSummary(expectedFare,totalRides);
+        Assert.assertEquals(invoiceSummaryExpected,invoiceSummary);
+
     }
 
 
