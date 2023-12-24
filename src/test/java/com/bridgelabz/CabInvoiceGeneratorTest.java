@@ -76,5 +76,22 @@ public class CabInvoiceGeneratorTest {
 
     }
 
+    @Test
+    public void premiumRides_normalRides(){
+        String userId= "harsh";
+        ArrayList<Ride> rides = new ArrayList<>();
+
+        rides.add(new Ride(10,5,"P"));
+        rides.add(new Ride(10,5,"N"));
+        rides.add(new Ride(5,2,"N"));
+        invoiceGeneratorService.addRidesToService(userId,rides);
+
+        InvoiceSummary invoiceSummary = invoiceGeneratorService.invoiceSummaryGivenUserIDAndType(userId);
+        double expectedFare = 157+160;
+        int totalRides = 3;
+        InvoiceSummary invoiceSummaryExpected = new InvoiceSummary(expectedFare,totalRides);
+        Assert.assertEquals(invoiceSummaryExpected,invoiceSummary);
+
+    }
 
 }
